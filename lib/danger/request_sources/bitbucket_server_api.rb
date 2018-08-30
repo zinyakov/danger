@@ -64,7 +64,10 @@ module Danger
         res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: use_ssl) do |http|
           http.request(req)
         end
-        JSON.parse(res.body, symbolize_names: true)
+        body = res.body.encode("UTF-8", invalid: :replace,
+         undef: :replace,
+         replace: '')
+        JSON.parse(body, symbolize_names: true)
       end
 
       def post(uri, body)
